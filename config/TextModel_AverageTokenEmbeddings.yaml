@@ -1,0 +1,34 @@
+epochs: 100
+batch_size: 256
+seed: 0
+devices: 0
+train: True
+dataset: CallsDataset_V2
+
+no_cuda: False
+
+model: TextModel_AverageTokenEmbeddings
+model_config: {'hidden_size': 128, 'hidden_layers': 3, 'dropout': 0, 'sparse': False, 'init_std': 0.01, 'pretrained_embeddings_name': 'fasttext_200.wv.vectors.npy', 'adjust_embeddings': True, 'in_bn': True, 'hid_bn': True, 'out_bn': True,}
+loss: ModelWrappedWithMSELoss
+#loss: ModelWrappedWithMSELossAndMulticlassBatchLoss
+#loss: ModelWrappedWithBinaryCELoss
+
+grad_clip: 0
+eval_freq: 1000000000000
+print_freq: 200
+save_freq: 1000000000000
+
+# Set experiment_settings.mask either to [] to use no financial features or
+# to ['vix', 'size', 'volaprior', 'btm', 'sue', 'industry'] (or anything in
+# between, cannot be None/unset.
+experiment_settings: {'financial_features_mask': "[]"}
+
+dataset_dir: data/transformed_data/
+results_dir: data/results/
+
+model_select_metric: min_loss, max_pr
+
+train_data_config: {'data_padded_dat':'train_data_padded.dat', 'data_padded_loc':'train_data_padded.loc', 'data_padded_stats':'train_data_padded.stats'}
+val_data_config: {'data_padded_dat':'validate_data_padded.dat', 'data_padded_loc':'validate_data_padded.loc', 'data_padded_stats':'validate_data_padded.stats'}
+test_data_config: {'data_padded_dat':'test_data_padded.dat', 'data_padded_loc':'test_data_padded.loc', 'data_padded_stats':'test_data_padded.stats'}
+optimization_config: "[{'epoch': 0, 'optimizer': 'Adagrad', 'lr': 0.05, 'weight_decay': 0.0000001}]"
